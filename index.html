@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jesús Corona — Desarrollador de software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --bg-alt:#0f0f13;
+    --card:#131317;
+    --card-border:#221f22;
+    --red:#e8283f;
+    --red-dim:#8a1c28;
+    --text:#f2f1ee;
+    --text-dim:#9a9a9f;
+    --text-faint:#5e5e64;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk', sans-serif;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,12,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--card-border);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;max-width:1180px;margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;}
+  .brand .mark{
+    width:34px;height:34px;border:1px solid var(--red);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';
+    font-weight:700;color:var(--red);font-size:14px;
+  }
+  .brand span{color:var(--text-dim);}
+  .brand strong{color:var(--text);}
+  .navlinks{display:flex;gap:34px;font-size:14.5px;color:var(--text-dim);}
+  .navlinks a{position:relative;padding-bottom:4px;transition:color .2s;}
+  .navlinks a:hover, .navlinks a.active{color:var(--text);}
+  .navlinks a.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--red);
+  }
+  .cv-btn{
+    display:flex;align-items:center;gap:8px;
+    background:var(--red);color:#fff;border:none;
+    padding:10px 18px;border-radius:8px;font-size:14px;font-weight:500;
+    cursor:pointer;transition:background .2s;
+  }
+  .cv-btn:hover{background:#c71f34;}
+  @media(max-width:860px){
+    .navlinks{display:none;}
+    .cv-btn{display:none;}
+  }
+
+  .hamburger-btn{
+    display:none;
+    flex-direction:column;justify-content:center;gap:5px;
+    width:38px;height:38px;background:none;border:1px solid var(--card-border);
+    border-radius:8px;cursor:pointer;
+  }
+  .hamburger-btn span{
+    display:block;width:16px;height:2px;background:var(--text);margin:0 auto;
+    transition:transform .25s ease, opacity .2s ease;
+  }
+  .hamburger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger-btn.open span:nth-child(2){opacity:0;}
+  .hamburger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  @media(max-width:860px){.hamburger-btn{display:flex;}}
+
+  .mobile-menu{
+    max-height:0;overflow:hidden;
+    background:var(--bg-alt);border-bottom:1px solid var(--card-border);
+    display:flex;flex-direction:column;
+    transition:max-height .3s ease;
+  }
+  .mobile-menu.open{max-height:400px;}
+  .mobile-menu a{
+    padding:16px 32px;font-size:15px;color:var(--text-dim);
+    border-bottom:1px solid var(--card-border);
+  }
+  .mobile-menu a:active{color:var(--text);}
+  .mobile-menu .mobile-cv{color:var(--red);font-weight:500;border-bottom:none;}
+
+  .hero{
+    position:relative;
+    padding:96px 0 100px;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;
+  }
+  .particles-bg{
+    position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  }
+  .eyebrow{
+    color:var(--red);font-size:13px;letter-spacing:.02em;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--red);}
+  .hero h1{
+    font-size:64px;line-height:1.02;font-weight:700;
+  }
+  .hero h1 .last{color:var(--red);}
+  .role{
+    margin-top:22px;font-size:19px;color:#d7d6d2;font-weight:500;
+  }
+  .hero p.desc{
+    margin-top:16px;color:var(--text-dim);max-width:480px;font-size:15.5px;
+  }
+  .hero-actions{display:flex;gap:14px;margin-top:32px;}
+  .btn-primary{
+    background:var(--red);color:#fff;padding:13px 24px;border-radius:9px;
+    font-size:14.5px;font-weight:500;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s, background .2s;
+  }
+  .btn-primary:hover{background:#c71f34;transform:translateY(-1px);}
+  .btn-ghost{
+    border:1px solid var(--card-border);color:var(--text);padding:13px 24px;border-radius:9px;
+    font-size:14.5px;font-weight:500;transition:border-color .2s, background .2s;
+  }
+  .btn-ghost:hover{border-color:#3a373a;background:#151417;}
+  .socials{display:flex;gap:16px;margin-top:36px;}
+  .socials a{
+    width:38px;height:38px;border:1px solid var(--card-border);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;color:var(--text-dim);
+    transition:all .2s;
+  }
+  .socials a:hover{border-color:var(--red);color:var(--red);}
+
+  .hero-visual{position:relative;padding:34px 28px 46px;}
+  .photo-frame{
+    position:relative;overflow:hidden;aspect-ratio:1/0.98;
+    border-radius:38% 62% 63% 37% / 42% 38% 62% 58%;
+    border:1.5px solid var(--red);
+    box-shadow:0 0 0 1px rgba(232,40,63,.12), 0 40px 80px -24px rgba(0,0,0,.65), 0 0 46px -12px rgba(232,40,63,.3);
+  }
+  .photo-frame img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(.92) contrast(1.06) brightness(.92);
+  }
+  .photo-frame::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(160deg, rgba(232,40,63,.1) 0%, rgba(10,10,12,0) 30%, rgba(10,10,12,.55) 100%);
+  }
+  .circuit{position:absolute;pointer-events:none;opacity:.55;}
+  .circuit.c1{top:6px;left:-6px;width:70px;height:70px;}
+  .circuit.c2{bottom:22px;right:-10px;width:56px;height:56px;}
+  .quote-tag{
+    position:absolute;top:0;right:0;background:var(--bg);
+    border:1px solid var(--card-border);border-radius:12px;padding:16px 18px;
+    max-width:200px;font-size:13px;color:var(--text-dim);line-height:1.5;
+    box-shadow:0 20px 40px -12px rgba(0,0,0,.5);z-index:2;
+  }
+  .quote-tag .q{color:var(--red);font-family:'Space Grotesk';font-size:24px;line-height:0;position:relative;top:8px;}
+  .edu-tag{
+    position:absolute;bottom:6px;right:-10px;max-width:250px;z-index:2;
+    background:rgba(19,19,23,.92);backdrop-filter:blur(8px);
+    border:1px solid var(--card-border);border-radius:11px;
+    padding:12px 14px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 20px 40px -14px rgba(0,0,0,.6);
+  }
+  .edu-tag .ic{
+    width:34px;height:34px;border-radius:8px;background:var(--red-dim);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;
+  }
+  .edu-tag .t{font-size:13px;font-weight:500;}
+  .edu-tag .s{font-size:11.5px;color:var(--text-dim);}
+
+  @media(max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;gap:48px;}
+    .hero h1{font-size:44px;}
+    .quote-tag{display:none;}
+  }
+
+  .section{padding:88px 0;border-top:1px solid var(--card-border);}
+  .section-head{margin-bottom:44px;}
+  .section-head .tag{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .section-head .tag .slash{color:var(--red);font-family:'Space Grotesk';font-size:22px;font-weight:700;}
+  .section-head h2{font-size:30px;font-weight:600;}
+  .section-head p{color:var(--text-dim);font-size:15px;margin-top:6px;}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+  .about-grid p{color:var(--text-dim);font-size:15.5px;margin-bottom:16px;max-width:480px;}
+  .facts{
+    border:1px solid var(--card-border);border-radius:14px;background:var(--card);
+    padding:8px 0;
+  }
+  .fact{display:flex;gap:14px;padding:16px 22px;border-bottom:1px solid var(--card-border);}
+  .fact:last-child{border-bottom:none;}
+  .fact .ic{color:var(--red);font-size:16px;margin-top:2px;}
+  .fact .l{font-size:12px;color:var(--text-faint);}
+  .fact .v{font-size:14.5px;font-weight:500;margin-top:2px;}
+  .side-card{
+    margin-top:22px;border-radius:14px;overflow:hidden;position:relative;
+    border:1px solid var(--card-border);aspect-ratio:16/10;
+    background:linear-gradient(135deg, #17141a, #0c0b0d);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .side-card .stack{
+    font-family:'Space Grotesk';font-size:13px;letter-spacing:.08em;color:var(--text-faint);
+    text-align:right;line-height:2.1;
+  }
+  .side-card .stack b{color:var(--red);}
+
+  .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .skill-card{
+    border:1px solid var(--card-border);border-radius:14px;background:var(--card);
+    padding:24px;
+  }
+  .skill-card .head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .skill-card .head .ic{color:var(--red);font-size:18px;}
+  .skill-card .head h3{font-size:15.5px;font-weight:600;}
+  .skill-item{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:14px;color:#d7d6d2;transition:color .25s ease;}
+  .tech-ic{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:20px;height:20px;color:var(--text-faint);font-size:17px;
+    transition:color .25s ease, filter .25s ease, transform .25s ease;
+  }
+  .skill-item:hover{color:#fff;}
+  .skill-item:hover .tech-ic{
+    color:var(--red);
+    filter:drop-shadow(0 0 7px rgba(232,40,63,.75));
+    transform:scale(1.08);
+  }
+  @media(max-width:900px){.skills-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:560px){.skills-grid{grid-template-columns:1fr;}}
+
+  .proj-head{display:flex;justify-content:space-between;align-items:flex-end;}
+  .proj-head a{color:var(--red);font-size:14px;font-weight:500;}
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px;}
+  .proj-card{
+    border:1px solid var(--card-border);border-radius:14px;overflow:hidden;background:var(--card);
+    transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:#3a2226;transform:translateY(-3px);}
+  .proj-thumb{
+    aspect-ratio:16/10;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,#1a1418,#0c0b0d);
+  }
+  .proj-thumb .mock{position:absolute;inset:14px;border:1px solid #2a2529;border-radius:8px;background:#0e0d10;}
+  .proj-thumb .mock .bar{height:22px;border-bottom:1px solid #2a2529;display:flex;align-items:center;gap:5px;padding:0 10px;}
+  .proj-thumb .mock .bar span{width:6px;height:6px;border-radius:50%;background:#3a3539;}
+  .proj-body{padding:20px 20px 22px;}
+  .proj-body h3{font-size:16.5px;font-weight:600;margin-bottom:12px;}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .tag-pill{
+    font-size:11.5px;color:var(--red);background:rgba(232,40,63,.09);
+    border:1px solid rgba(232,40,63,.25);padding:4px 10px;border-radius:6px;
+  }
+  .proj-body .d{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;}
+  .proj-links{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+  .proj-links .view{color:var(--red);font-weight:500;}
+  .proj-links .gh{color:var(--text-dim);display:flex;align-items:center;gap:6px;}
+  @media(max-width:900px){.proj-grid{grid-template-columns:1fr;}}
+
+  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .process-step{
+    border:1px solid var(--card-border);padding:28px 22px;position:relative;background:var(--card);
+  }
+  .process-step:not(:last-child){border-right:none;}
+  .process-step:first-child{border-radius:14px 0 0 14px;}
+  .process-step:last-child{border-radius:0 14px 14px 0;}
+  .process-step .num{
+    width:38px;height:38px;border:1px solid var(--red);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;color:var(--red);
+    font-family:'Space Grotesk';font-size:15px;font-weight:600;margin-bottom:16px;
+  }
+  .process-step h3{font-size:15px;font-weight:600;margin-bottom:6px;}
+  .process-step p{font-size:13px;color:var(--text-dim);}
+  @media(max-width:900px){
+    .process-grid{grid-template-columns:1fr;}
+    .process-step, .process-step:first-child, .process-step:last-child{border-radius:14px;border-right:1px solid var(--card-border);margin-bottom:14px;}
+  }
+
+  .edu-card{
+    border:1px solid var(--card-border);border-radius:14px;background:var(--card);
+    padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:30px;
+  }
+  .edu-block{display:flex;gap:14px;}
+  .edu-block .ic{
+    width:42px;height:42px;border-radius:10px;background:var(--red-dim);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;color:var(--red);
+  }
+  .edu-block h4{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .edu-block .meta{font-size:12.5px;color:var(--text-faint);margin-bottom:10px;}
+  .edu-block ul{list-style:none;font-size:13.5px;color:var(--text-dim);}
+  .edu-block ul li{padding:3px 0;position:relative;padding-left:14px;}
+  .edu-block ul li::before{content:"•";position:absolute;left:0;color:var(--red);}
+  @media(max-width:900px){.edu-card{grid-template-columns:1fr;}}
+
+  .contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:64px;align-items:start;}
+  .contact-intro h2{font-size:38px;font-weight:700;margin:14px 0 16px;}
+  .contact-intro > p{color:var(--text-dim);font-size:15.5px;max-width:420px;margin-bottom:32px;}
+  .contact-list{display:flex;flex-direction:column;gap:12px;}
+  .contact-item{
+    display:flex;align-items:center;gap:16px;
+    border:1px solid var(--card-border);border-radius:12px;background:var(--card);
+    padding:16px 18px;transition:border-color .2s, background .2s;
+  }
+  .contact-item:hover{border-color:#3a2226;background:#161519;}
+  .contact-item .tech-ic{
+    width:38px;height:38px;font-size:17px;border-radius:10px;background:var(--red-dim);color:var(--red);
+    flex-shrink:0;
+  }
+  .contact-item:hover .tech-ic{filter:drop-shadow(0 0 7px rgba(232,40,63,.6));transform:none;}
+  .contact-item .l{font-size:11px;letter-spacing:.05em;color:var(--text-faint);text-transform:uppercase;margin-bottom:2px;}
+  .contact-item .v{font-size:14.5px;font-weight:500;color:var(--text);}
+
+  .contact-form{
+    border:1px solid var(--card-border);border-radius:16px;background:var(--card);
+    padding:32px;display:flex;flex-direction:column;gap:20px;
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .field{display:flex;flex-direction:column;gap:8px;}
+  .field label{font-size:12px;letter-spacing:.05em;color:var(--text-faint);text-transform:uppercase;}
+  .field input, .field textarea{
+    background:var(--bg-alt);border:1px solid var(--card-border);border-radius:9px;
+    padding:13px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14.5px;
+    transition:border-color .2s;resize:vertical;
+  }
+  .field input::placeholder, .field textarea::placeholder{color:var(--text-faint);}
+  .field input:focus, .field textarea:focus{outline:none;border-color:var(--red);}
+  .form-submit{border:none;cursor:pointer;justify-content:center;width:100%;font-size:15px;padding:14px;}
+  @media(max-width:900px){
+    .contact-grid{grid-template-columns:1fr;gap:40px;}
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  footer{border-top:1px solid var(--card-border);padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .flinks{display:flex;gap:26px;font-size:13.5px;color:var(--text-dim);}
+  footer .made{font-size:12.5px;color:var(--text-faint);}
+  @media(max-width:700px){footer .flinks{display:none;}}
+
+  @media(max-width:480px){
+    .wrap{padding:0 20px;}
+    .section{padding:56px 0;}
+    .hero{padding:64px 0 56px;}
+    .hero h1{font-size:34px;}
+    .role{font-size:16px;}
+    .hero-actions{flex-direction:column;}
+    .hero-actions a{text-align:center;}
+    .section-head h2{font-size:24px;}
+    .skill-card{padding:18px;}
+    .edu-card{padding:20px;}
+    .contact-form{padding:22px;}
+    .process-step{padding:22px 16px;}
+    nav{padding:14px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="brand">
+      <div class="mark">JC</div>
+      <span>Jesús <strong>Corona</strong></span>
+    </div>
+    <div class="navlinks">
+      <a href="#inicio" class="active">Inicio</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#skills">Skills</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#educacion">Educación</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <button class="cv-btn">Descargar CV ↓</button>
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#inicio">Inicio</a>
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#skills">Skills</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#educacion">Educación</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#" class="mobile-cv">Descargar CV ↓</a>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <canvas id="particles" class="particles-bg"></canvas>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Hola, soy</div>
+      <h1>JESÚS<br><span class="last">CORONA</span></h1>
+      <div class="role">Desarrollador de software en formación.</div>
+      <p class="desc">Apasionado por crear soluciones digitales que combinan funcionalidad, diseño y una gran experiencia de usuario. Actualmente en el último cuatrimestre de Ingeniería en Diseño de Software.</p>
+      <div class="hero-actions">
+        <a href="#proyectos" class="btn-primary">Ver proyectos →</a>
+        <a href="#contacto" class="btn-ghost">Contáctame</a>
+      </div>
+      <div class="socials">
+        <a href="#" aria-label="GitHub">GH</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="Correo">@</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="circuit c1" viewBox="0 0 70 70" fill="none"><path d="M2 40 L2 14 Q2 4 12 4 L40 4" stroke="var(--red)" stroke-width="1.2" stroke-dasharray="1 5" stroke-linecap="round"/><circle cx="40" cy="4" r="2.4" fill="var(--red)"/><circle cx="2" cy="40" r="2.4" fill="var(--red)"/></svg>
+      <svg class="circuit c2" viewBox="0 0 56 56" fill="none"><path d="M54 4 L54 30 Q54 40 44 40 L16 40" stroke="var(--red)" stroke-width="1.2" stroke-dasharray="1 5" stroke-linecap="round"/><circle cx="54" cy="4" r="2.2" fill="var(--red)"/><circle cx="16" cy="40" r="2.2" fill="var(--red)"/></svg>
+      <div class="quote-tag"><span class="q">"</span>La tecnología también es una forma de crear un mejor mañana.</div>
+      <div class="photo-frame">
+        <img src="./assets/foto.jpeg" alt="Jesús Corona programando en su espacio de trabajo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sobre-mi">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag"><span class="slash">/</span><h2>Sobre mí</h2></div>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>Soy estudiante de último cuatrimestre de Ingeniería en Diseño de Software, apasionado por el desarrollo de soluciones digitales y la creación de experiencias web funcionales. Durante mi formación he trabajado con tecnologías como JavaScript, React, Node.js, MySQL y MongoDB, desarrollando proyectos académicos y personales.</p>
+        <p>Busco seguir creciendo profesionalmente, participar en proyectos reales y aprender de grandes equipos de trabajo.</p>
+        <div class="side-card">
+          <div class="stack">DISCIPLINA<br>+<br>CÓDIGO<br>=<br><b>RESULTADOS</b></div>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact">
+          <div class="ic">🎓</div>
+          <div><div class="l">Actualmente</div><div class="v">Ingeniería en Diseño de Software</div></div>
+        </div>
+        <div class="fact">
+          <div class="ic">📍</div>
+          <div><div class="l">Ubicación</div><div class="v">Puebla, México</div></div>
+        </div>
+        <div class="fact">
+          <div class="ic">🎯</div>
+          <div><div class="l">Enfoque</div><div class="v">Desarrollo Web / Software</div></div>
+        </div>
+        <div class="fact">
+          <div class="ic">🟢</div>
+          <div><div class="l">Disponibilidad</div><div class="v">Para oportunidades profesionales</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag"><span class="slash">/</span><h2>Skills</h2></div>
+      <p>Tecnologías y herramientas que utilizo para desarrollar soluciones.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="head"><span class="ic">◧</span><h3>Frontend</h3></div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-html5"></i></span>HTML5</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-css3-alt"></i></span>CSS3</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-js"></i></span>JavaScript</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-react"></i></span>React</div>
+      </div>
+      <div class="skill-card">
+        <div class="head"><span class="ic">⌘</span><h3>Backend</h3></div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-node-js"></i></span>Node.js</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-solid fa-server"></i></span>Express</div>
+      </div>
+      <div class="skill-card">
+        <div class="head"><span class="ic">▤</span><h3>Bases de datos</h3></div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-solid fa-database"></i></span>MySQL</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-solid fa-database"></i></span>MongoDB</div>
+      </div>
+      <div class="skill-card">
+        <div class="head"><span class="ic">🎓</span><h3>Herramientas</h3></div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-git-alt"></i></span>Git</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-brands fa-github"></i></span>GitHub</div>
+        <div class="skill-item"><span class="tech-ic"><i class="fa-solid fa-code"></i></span>VS Code</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="proyectos">
+  <div class="wrap">
+    <div class="proj-head">
+      <div class="section-head" style="margin-bottom:0;">
+        <div class="tag"><span class="slash">/</span><h2>Proyectos</h2></div>
+        <p>Algunos de los proyectos en los que he trabajado y que mejor representan mis habilidades.</p>
+      </div>
+      <a href="#">Ver todos los proyectos →</a>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-thumb"><div class="mock"><div class="bar"><span></span><span></span><span></span></div></div></div>
+        <div class="proj-body">
+          <h3>Sistema de gestión académica</h3>
+          <div class="tags"><span class="tag-pill">React</span><span class="tag-pill">Node.js</span><span class="tag-pill">MySQL</span></div>
+          <div class="d">Plataforma web para la administración de alumnos, materias y calificaciones.</div>
+          <div class="proj-links"><a href="#" class="view">Ver proyecto →</a><a href="#" class="gh">GitHub</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb"><div class="mock"><div class="bar"><span></span><span></span><span></span></div></div></div>
+        <div class="proj-body">
+          <h3>E-commerce de productos</h3>
+          <div class="tags"><span class="tag-pill">React</span><span class="tag-pill">JavaScript</span><span class="tag-pill">Tailwind</span></div>
+          <div class="d">Tienda en línea con carrito de compras, pagos y panel de administración.</div>
+          <div class="proj-links"><a href="#" class="view">Ver proyecto →</a><a href="#" class="gh">GitHub</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb"><div class="mock"><div class="bar"><span></span><span></span><span></span></div></div></div>
+        <div class="proj-body">
+          <h3>Dashboard de tareas</h3>
+          <div class="tags"><span class="tag-pill">React</span><span class="tag-pill">Node.js</span><span class="tag-pill">MongoDB</span></div>
+          <div class="d">Aplicación para gestionar proyectos y tareas en equipo.</div>
+          <div class="proj-links"><a href="#" class="view">Ver proyecto →</a><a href="#" class="gh">GitHub</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag"><span class="slash">/</span><h2>Mi proceso</h2></div>
+      <p>Así es como trabajo en cada proyecto.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="num">01</div>
+        <h3>Entender</h3>
+        <p>Analizo el problema y las necesidades del proyecto.</p>
+      </div>
+      <div class="process-step">
+        <div class="num">02</div>
+        <h3>Diseñar</h3>
+        <p>Planeo la estructura, experiencia y solución.</p>
+      </div>
+      <div class="process-step">
+        <div class="num">03</div>
+        <h3>Desarrollar</h3>
+        <p>Construyo la solución con las tecnologías adecuadas.</p>
+      </div>
+      <div class="process-step">
+        <div class="num">04</div>
+        <h3>Mejorar</h3>
+        <p>Pruebo, corrijo y optimizo el resultado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="educacion">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="tag"><span class="slash">/</span><h2>Educación</h2></div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-block">
+        <div class="ic">🎓</div>
+        <div>
+          <h4>Ingeniería en Diseño de Software</h4>
+          <div class="meta">Universidad (nombre de la institución) · 2022 – 2026 · Último cuatrimestre</div>
+        </div>
+      </div>
+      <div class="edu-block">
+        <div class="ic">📄</div>
+        <div>
+          <h4>Cursos / Certificaciones</h4>
+          <ul>
+            <li>Desarrollo Web (Udemy)</li>
+            <li>JavaScript (Platzi)</li>
+            <li>Fundamentos de React (Coursera)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contacto">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-intro">
+        <div class="eyebrow">Contacto</div>
+        <h2>Hablemos.</h2>
+        <p>¿Tienes un proyecto, una duda o quieres conocer más sobre mi trabajo? Escríbeme. Respondo siempre — sin excusas, sin demoras.</p>
+
+        <div class="contact-list">
+          <a href="mailto:jesus.corona@email.com" class="contact-item">
+            <span class="tech-ic"><i class="fa-solid fa-envelope"></i></span>
+            <div><div class="l">Email</div><div class="v">jesus.corona@email.com</div></div>
+          </a>
+          <a href="https://github.com/tuusuario" target="_blank" class="contact-item">
+            <span class="tech-ic"><i class="fa-brands fa-github"></i></span>
+            <div><div class="l">GitHub</div><div class="v">github.com/tuusuario</div></div>
+          </a>
+          <a href="https://linkedin.com/in/tuusuario" target="_blank" class="contact-item">
+            <span class="tech-ic"><i class="fa-brands fa-linkedin-in"></i></span>
+            <div><div class="l">LinkedIn</div><div class="v">linkedin.com/in/tuusuario</div></div>
+          </a>
+          <a href="https://wa.me/521XXXXXXXXXX" target="_blank" class="contact-item">
+            <span class="tech-ic"><i class="fa-brands fa-whatsapp"></i></span>
+            <div><div class="l">WhatsApp</div><div class="v">+52 1 XXX XXX XXXX</div></div>
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="fName">Nombre</label>
+            <input type="text" id="fName" name="name" placeholder="¿Con quién hablo?" required>
+          </div>
+          <div class="field">
+            <label for="fEmail">Correo</label>
+            <input type="email" id="fEmail" name="email" placeholder="Para responderte" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fSubject">Asunto</label>
+          <input type="text" id="fSubject" name="subject" placeholder="¿De qué se trata?" required>
+        </div>
+        <div class="field">
+          <label for="fMessage">Mensaje</label>
+          <textarea id="fMessage" name="message" rows="5" placeholder="Cuéntame sobre tu proyecto o idea..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary form-submit">Enviar mensaje →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><div class="mark">JC</div><span>Jesús <strong>Corona</strong></span></div>
+    <div class="flinks">
+      <a href="#inicio">Inicio</a><a href="#sobre-mi">Sobre mí</a><a href="#skills">Skills</a>
+      <a href="#proyectos">Proyectos</a><a href="#educacion">Educación</a><a href="#contacto">Contacto</a>
+    </div>
+    <div class="made">Hecho en México</div>
+  </div>
+</footer>
+<script src="./code.js"></script>
+</body>
+</html>
